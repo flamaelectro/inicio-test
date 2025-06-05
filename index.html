@@ -1,4 +1,3 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,6 +5,8 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
+    <h1>Login con Google</h1>
+
     <div id="g_id_onload"
          data-client_id="113652797976-ahph10pvem5p3hq7eng3ggff3tfk6004.apps.googleusercontent.com"
          data-callback="handleCredentialResponse"
@@ -24,23 +25,22 @@
 
     <script>
       function handleCredentialResponse(response) {
-        // Este es el JWT (ID token)
         const token = response.credential;
         console.log("TOKEN:", token);
 
-        // 👇 Aquí simulas enviar el token al juego dentro de tu extensión
-        const message = {
-          type: "id_token",
-          credential: token
-        };
-
-        // Envía el mensaje al opener (si existe)
+        // Envía el token de regreso al opener (tu extensión)
         if (window.opener) {
-          window.opener.postMessage(message, "*");
-        }
+          window.opener.postMessage({
+            type: "google_id_token",
+            token: token
+          }, "*");
 
-        // Opcionalmente: cerrar ventana
-        window.close();
+          // Cierra la ventana de login
+          window.close();
+        } else {
+          // Si no hay opener (ej: entraste directo), solo muestra el token
+          document.body.innerHTML += `<p>Token: ${token}</p>`;
+        }
       }
     </script>
   </body>
