@@ -1,47 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Login con Google</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-  </head>
-  <body>
-    <h1>Login con Google</h1>
+<head>
+  <title>Login con Google (Redirección)</title>
+</head>
+<body>
+  <h1>Login con Google (redirección)</h1>
+  <a id="login-link" href="#">Login</a>
 
-    <div id="g_id_onload"
-         data-client_id="113652797976-ahph10pvem5p3hq7eng3ggff3tfk6004.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse"
-         data-auto_prompt="false"
-         data-auto_select="false">
-    </div>
+  <script>
+    const clientId = "113652797976-ahph10pvem5p3hq7eng3ggff3tfk6004.apps.googleusercontent.com";
+    const redirectUri = "https://TU_USUARIO.github.io/callback.html";
+    const scope = "email profile openid";
+    const state = crypto.randomUUID();
 
-    <div class="g_id_signin"
-         data-type="standard"
-         data-size="large"
-         data-theme="outline"
-         data-text="sign_in_with"
-         data-shape="rectangular"
-         data-logo_alignment="left">
-    </div>
+    const loginUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=token&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&state=${encodeURIComponent(state)}`;
 
-    <script>
-      function handleCredentialResponse(response) {
-        const token = response.credential;
-        console.log("TOKEN:", token);
-
-        // Envía el token de regreso al opener (tu extensión)
-        if (window.opener) {
-          window.opener.postMessage({
-            type: "google_id_token",
-            token: token
-          }, "*");
-
-          // Cierra la ventana de login
-          window.close();
-        } else {
-          // Si no hay opener (ej: entraste directo), solo muestra el token
-          document.body.innerHTML += `<p>Token: ${token}</p>`;
-        }
-      }
-    </script>
-  </body>
+    document.getElementById("login-link").href = loginUrl;
+  </script>
+</body>
 </html>
