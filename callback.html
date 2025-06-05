@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Procesando login...</title>
+  </head>
+  <body>
+    <h1>Procesando login...</h1>
+    <script>
+      function getAccessTokenFromHash() {
+        const hashParams = new URLSearchParams(window.location.hash.substr(1));
+        const accessToken = hashParams.get("access_token");
+        const expiresIn = hashParams.get("expires_in");
+        const tokenType = hashParams.get("token_type");
+
+        if (accessToken) {
+          // Puedes mostrar el token o enviarlo a tu extensión
+          console.log("Access Token:", accessToken);
+          document.body.innerHTML = `<h2>¡Login exitoso!</h2><p>Token: ${accessToken}</p>`;
+
+          // También podrías hacer window.postMessage o usar chrome.runtime.sendMessage aquí
+        } else {
+          document.body.innerHTML = "<h2>Error al iniciar sesión.</h2>";
+        }
+      }
+
+      getAccessTokenFromHash();
+    </script>
+  </body>
+</html>
