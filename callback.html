@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Procesando login...</title>
-  </head>
-  <body>
-    <h1>Procesando login...</h1>
-    <script>
-      function getAccessTokenFromHash() {
-        const hashParams = new URLSearchParams(window.location.hash.substr(1));
-        const accessToken = hashParams.get("access_token");
-        const expiresIn = hashParams.get("expires_in");
-        const tokenType = hashParams.get("token_type");
+<head>
+  <title>Callback de Google Login</title>
+</head>
+<body>
+  <h1>Procesando login...</h1>
 
-        if (accessToken) {
-          // Puedes mostrar el token o enviarlo a tu extensión
-          console.log("Access Token:", accessToken);
-          document.body.innerHTML = `<h2>¡Login exitoso!</h2><p>Token: ${accessToken}</p>`;
+  <script>
+    // Obtener el token del hash (#) de la URL
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    const accessToken = params.get('access_token');
+    const state = params.get('state');
 
-          // También podrías hacer window.postMessage o usar chrome.runtime.sendMessage aquí
-        } else {
-          document.body.innerHTML = "<h2>Error al iniciar sesión.</h2>";
-        }
+    if (accessToken) {
+      console.log("Token recibido:", accessToken);
+
+      // Aquí puedes guardarlo o enviarlo a tu extensión o ventana principal
+      // Por ejemplo, puedes enviarlo a la ventana que abrió este popup con postMessage
+      if (window.opener) {
+        window.opener.postMessage({ type: 'access_token', token: accessToken }, '*');
       }
 
-      getAccessTokenFromHash();
-    </script>
-  </body>
+      // Cerrar ventana o redirigir a alguna página de éxito
+      window.close();
+    } else {
+      console.error('No se encontró el token en la URL');
+    }
+  </script>
+</body>
 </html>
