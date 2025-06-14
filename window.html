@@ -1,0 +1,69 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>New Browser</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="body">
+	<div>
+		<webview 
+  class="background"
+  id="browser" 
+  src="https://www.google.com"
+  allowfullscreen
+  allowpopups
+  webpreferences="nativeWindowOpen=yes, sandbox=no"
+  style="width:100%; height:100%;">
+  </webview>
+
+		<div id="leftButtonContainer">
+			<button class="ctrButton" title="Back" id="backButton">
+				<img src="images/back.png" />
+			</button>
+			<button class="ctrButton" title="Forward" id="forwardButton">
+				<img src="images/forward.png" />
+			</button>
+			<button class="ctrButton" title="Refresh" id="refreshButton">
+				<img src="images/refresh.png" />
+			</button>
+			<button class="ctrButton" title="New Window" id="newWindow">
+				<img src="images/newWindow.png" />
+			</button>
+			<button class="ctrButton" title=":)" id="donate">
+				<img src="images/donate.png" />
+			</button>
+			<button class="ctrButton" title="Home" id="homeButton">
+				<img src="images/home.png" />
+			</button>
+			<textarea class="ctrButton" id="setHome" rows="1" placeholder="New homepage?"></textarea>
+			<textarea class="ctrButton" id="webBar" rows="1"></textarea>
+
+
+		</div>
+
+
+
+
+	</div>
+	   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const webview = document.getElementById('browser');
+            
+            // Enhanced error handling
+            webview.addEventListener('loadabort', function(e) {
+                console.error('Load failed:', e.url, 'Reason:', e.reason);
+                
+                // Special handling for Google auth pages
+                if (e.url.includes('accounts.google.com') && e.reason === 'ERR_BLOCKED_BY_CLIENT') {
+                    chrome.runtime.sendMessage({
+                        action: 'openExternal',
+                        url: e.url
+                    });
+                }
+            });
+        });
+    </script>
+	<script src="scripts/main.js"></script>
+
+</body>
+</html>

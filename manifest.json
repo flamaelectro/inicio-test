@@ -1,0 +1,31 @@
+{
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "description": "Google Browser",
+  "icons": {
+    "128": "icons/logo128.png",
+    "16": "icons/logo16.png",
+    "32": "icons/logo32.png"
+  },
+  "manifest_version": 2,
+  "name": "Google Classroom",
+   "permissions": [
+    "webview",
+    "alwaysOnTopWindows",
+    "storage",
+    "cookies",
+    "contextMenus",
+    "notifications",
+    "unlimitedStorage",
+    "<all_urls>",  // ✅ Permite navegar a cualquier dominio
+    "browser",
+    "fullscreen",
+    "windows"       // ✅ Necesario para abrir nuevas ventanas
+  ],
+  "short_name": "Classroom",
+  "version": "1.31"
+}
